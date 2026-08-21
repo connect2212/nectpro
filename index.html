@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>NECTPRO PANEL</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #080b12;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.bg {
+  position: fixed;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: #00c8ff;
+  filter: blur(140px);
+  opacity: .18;
+  animation: move 5s infinite alternate ease-in-out;
+}
+
+@keyframes move {
+  from { transform: translate(-100px, -100px); }
+  to { transform: translate(100px, 100px); }
+}
+
+.panel {
+  width: 90%;
+  max-width: 380px;
+  padding: 25px;
+  border-radius: 25px;
+  background: rgba(20, 25, 38, .95);
+  border: 1px solid rgba(0, 200, 255, .3);
+  box-shadow: 0 0 30px rgba(0, 200, 255, .15);
+  position: relative;
+  z-index: 1;
+}
+
+.logo {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #00c8ff;
+  text-shadow: 0 0 15px rgba(0, 200, 255, .7);
+}
+
+.sub {
+  text-align: center;
+  color: #8a94a6;
+  font-size: 12px;
+  margin: 8px 0 25px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #151b28;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid #252e40;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.status {
+  font-size: 12px;
+  color: #8a94a6;
+  margin-top: 5px;
+}
+
+/* SWITCH */
+.switch {
+  position: relative;
+  width: 58px;
+  height: 32px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #30394a;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 4px;
+  top: 4px;
+  background: white;
+  border-radius: 50%;
+  transition: .2s;
+}
+
+input:checked + .slider {
+  background: #00c8ff;
+  box-shadow: 0 0 15px rgba(0, 200, 255, .7);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.info {
+  margin-top: 20px;
+  padding: 14px;
+  text-align: center;
+  background: #101722;
+  border-radius: 14px;
+  color: #9da9ba;
+  font-size: 13px;
+}
+
+.fast-mode * {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+.fast-mode {
+  touch-action: manipulation;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #536075;
+  font-size: 11px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<div class="panel">
+
+  <div class="logo">NECTPRO</div>
+  <div class="sub">FAST SCREEN CONTROL PANEL</div>
+
+  <div class="menu">
+    <div>
+      <div class="title">⚡ จอไว</div>
+      <div class="status" id="status">สถานะ: ปิด</div>
+    </div>
+
+    <label class="switch">
+      <input type="checkbox" id="fastSwitch">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="info" id="info">
+    ระบบพร้อมใช้งาน
+  </div>
+
+  <div class="footer">
+    NECTPRO PANEL • v1.0
+  </div>
+
+</div>
+
+<script>
+const fastSwitch = document.getElementById("fastSwitch");
+const status = document.getElementById("status");
+const info = document.getElementById("info");
+
+fastSwitch.addEventListener("change", function () {
+  if (this.checked) {
+    document.body.classList.add("fast-mode");
+
+    status.textContent = "สถานะ: เปิดใช้งาน ✓";
+    info.textContent = "⚡ FAST MODE เปิดอยู่ — หน้าเว็บตอบสนองเร็วขึ้น";
+
+    localStorage.setItem("nectproFastMode", "on");
+  } else {
+    document.body.classList.remove("fast-mode");
+
+    status.textContent = "สถานะ: ปิด";
+    info.textContent = "ระบบพร้อมใช้งาน";
+
+    localStorage.setItem("nectproFastMode", "off");
+  }
+});
+
+/* จำสถานะไว้แม้ปิดเว็บ */
+if (localStorage.getItem("nectproFastMode") === "on") {
+  fastSwitch.checked = true;
+  document.body.classList.add("fast-mode");
+  status.textContent = "สถานะ: เปิดใช้งาน ✓";
+  info.textContent = "⚡ FAST MODE เปิดอยู่ — หน้าเว็บตอบสนองเร็วขึ้น";
+}
+</script>
+
+</body>
+</html>
